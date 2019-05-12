@@ -68,4 +68,3 @@ def vote_cnt(G, p, k, ell, result):
         # print('res2', result)
         if res == result:
             return c
-    print('wtf')

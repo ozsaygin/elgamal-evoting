@@ -1,3 +1,10 @@
+# WARNING: IF THE CODE FAILS TO FIND VOTE COUNT
+# REASON IS THAT LAMBDA IS FLOATING POINT VALUE
+# ALL FAILURES MAY HAPPEN DUE TO THIS ^
+# IF IT FAILS, EXECUTE OVER AND OVER AGAIN 
+# CODE IS WORKING FINE FOR INTEGER LAMBDA VALUES
+
+
 import random
 # This block generates multiplicative inverse
 def egcd(a, b):
@@ -105,18 +112,34 @@ def CheckQuorum(a, h_a_lambda, p, q):
     for index, a_i in enumerate(a): # get a and index of a
         # calculate lambda for each a
         l = calculate_lambda(a_i , a)
-
         # Omega_a ^ lambda
         # print('l:', l) 
-        pw = pow(h_a_lambda[index], q-int(l), p)
-        h = (h * pw) %p
+        h = (h * pow(h_a_lambda[index], q+int(l), p)) %p
     # res = h % p
     return h
 
-# def ZK_commonexp(Lambda_i, h_a_lambda_i, Omega_i, p, q):
-#     """
-#     lambda -> share
-#     h -> pk
-#     """
+def ZK_commonexp(Lambda_i, h_a_lambda_i, Omega_i, p, q):
+    beta = Lambda_i
+    r = random.randint(0,q-1)
+    c = random.randint(0,q-1)
+    z = r + beta * c
+    b = pow(h_a_lambda_i,r,p)
+    u = h_a_lambda_i
+    v = pow(h_a_lambda_i, beta, p) 
+
+    return pow(h_a_lambda_i,z,p) == ((pow(h_a_lambda_i,r,p)*pow(h_a_lambda_i,beta*c,p))%p)
+
+
+
+    (u,v) = (pow(g, Lambda_i),pow(h, Lambda_i))
+    r = random.randint(0,q-1)
+    (a,b) = (pow(g, r),pow(h, r))
+
+    c = random.randint(0,q-1)
+    z = r + c * Lambda_i
+
+    return pow(g, z,p) == ((a*pow(u,c,p))%p) and pow(Lambda_i,z,p) == ((b* pow(v,c,p))%p)
+
+
 
 

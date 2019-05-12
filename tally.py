@@ -1,12 +1,14 @@
 # WARNING: IF THE CODE FAILS TO FIND VOTE COUNT
 # REASON IS THAT LAMBDA IS FLOATING POINT VALUE
 # ALL FAILURES MAY HAPPEN DUE TO THIS ^
-# IF IT FAILS, EXECUTE OVER AND OVER AGAIN 
+# IF IT FAILS, EXECUTE OVER AND OVER AGAIN
 # CODE IS WORKING FINE FOR INTEGER LAMBDA VALUES
 
 
 import random
 # This block generates multiplicative inverse
+
+
 def egcd(a, b):
     if a == 0:
         return (b, 0, 1)
@@ -14,12 +16,15 @@ def egcd(a, b):
         g, y, x = egcd(b % a, a)
         return (g, x - (b // a) * y, y)
 
+
 def modinv(a, m):
     g, x, y = egcd(a, m)
     if g != 1:
         raise Exception('Modular inverse does not exist')
     else:
         return x % m
+
+
 def nToSum(N, S):
     ''' Creates a nested list of all possible lists of length N that sum to S'''
     if N <= 1:  # base case
@@ -67,33 +72,36 @@ def ShamirSecretSharing(n, t, s, q):
     # print('s_a', s_a)
     return s_a
 
+
 def PartialDecryption(X, a, Lambda, t, p):
     Omega = list()
     for i in range(t):
         s_a = Lambda[i]
         Omega_a = pow(X, s_a, p)
         Omega.append(Omega_a)
-    
+
     return Omega
+
 
 def calculate_lambda(a_i, a):
     l = 1
     for m in a:
         if m != a_i:
-                l = l * (m / (m - a_i)) 
+            l = l * (m / (m - a_i))
     return l
+
 
 def FullDecryption(Y, a, Omega, G, t, p, q):
     # k and ell hardcoded
-    a = [x+1 for x in a] # spent at least 5 hours for this line
+    a = [x+1 for x in a]  # spent at least 5 hours for this line
     X = 1
-    for index, a_i in enumerate(a): # get a and index of a
+    for index, a_i in enumerate(a):  # get a and index of a
         # calculate lambda for each a
         l = calculate_lambda(a_i, a)
         # print('lambda: ', l) # debug
         # Omega_a ^ lambda
         X *= pow(Omega[index], q-int(l), p)
-    result =  (Y * X) % p
+    result = (Y * X) % p
 
     comb = compress([], nToSum(4, 40))
     for c in comb:
@@ -106,40 +114,27 @@ def FullDecryption(Y, a, Omega, G, t, p, q):
         if res == result:
             return c
 
+
 def CheckQuorum(a, h_a_lambda, p, q):
     a = [x+1 for x in a]
     h = 1
-    for index, a_i in enumerate(a): # get a and index of a
+    for index, a_i in enumerate(a):  # get a and index of a
         # calculate lambda for each a
-        l = calculate_lambda(a_i , a)
+        l = calculate_lambda(a_i, a)
         # Omega_a ^ lambda
-        # print('l:', l) 
-        h = (h * pow(h_a_lambda[index], q+int(l), p)) %p
+        # print('l:', l)
+        h = (h * pow(h_a_lambda[index], q+int(l), p)) % p
     # res = h % p
     return h
 
+
 def ZK_commonexp(Lambda_i, h_a_lambda_i, Omega_i, p, q):
     beta = Lambda_i
-    r = random.randint(0,q-1)
-    c = random.randint(0,q-1)
+    r = random.randint(0, q-1)
+    c = random.randint(0, q-1)
     z = r + beta * c
-    b = pow(h_a_lambda_i,r,p)
+    b = pow(h_a_lambda_i, r, p)
     u = h_a_lambda_i
-    v = pow(h_a_lambda_i, beta, p) 
+    v = pow(h_a_lambda_i, beta, p)
 
-    return pow(h_a_lambda_i,z,p) == ((pow(h_a_lambda_i,r,p)*pow(h_a_lambda_i,beta*c,p))%p)
-
-
-
-    (u,v) = (pow(g, Lambda_i),pow(h, Lambda_i))
-    r = random.randint(0,q-1)
-    (a,b) = (pow(g, r),pow(h, r))
-
-    c = random.randint(0,q-1)
-    z = r + c * Lambda_i
-
-    return pow(g, z,p) == ((a*pow(u,c,p))%p) and pow(Lambda_i,z,p) == ((b* pow(v,c,p))%p)
-
-
-
-
+    return pow(h_a_lambda_i, z, p) == ((pow(h_a_lambda_i, r, p)*pow(h_a_lambda_i, beta*c, p)) % p)

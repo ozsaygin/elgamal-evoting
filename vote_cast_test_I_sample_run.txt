@@ -1,0 +1,17 @@
+>>> 
+=== RESTART: D:\..\vote_cast_test_I.py ===
+Vote generation for G_1
+Vote is good:  True
+
+Vote generation for G_2
+Vote is good:  True
+
+Vote generation for G_3
+Vote is good:  True
+
+Vote generation using a different G
+Vote is good:  False
+
+Generating 100 votes for G_3
+Vote is good:  False
+>>> 

@@ -83,12 +83,12 @@ def PartialDecryption(X, a, Lambda, t, p):
     return Omega
 
 
-def calculate_lambda(a_i, a,q):
+def calculate_lambda(a_i, a, q):
     l = 1
     for m in a:
         if m != a_i:
             denom = m - a_i + q
-            denom = modinv(denom,q)
+            denom = modinv(denom, q)
             l *= denom * m
     l = l % q
     return l
@@ -100,7 +100,7 @@ def FullDecryption(Y, a, Omega, G, t, p, q):
     X = 1
     for index, a_i in enumerate(a):  # get a and index of a
         # calculate lambda for each a
-        l = calculate_lambda(a_i, a,q)
+        l = calculate_lambda(a_i, a, q)
         # print('lambda: ', l) # debug
         # Omega_a ^ lambda
         X *= pow(Omega[index], q-int(l), p)
@@ -132,12 +132,21 @@ def CheckQuorum(a, h_a_lambda, p, q):
 
 
 def ZK_commonexp(Lambda_i, h_a_lambda_i, Omega_i, p, q):
+
+    # get g
+    f_pk = open('pk.txt', 'r')  # file to public parameters
+    _ = int(f_pk.readline())
+    _ = int(f_pk.readline())
+    g = int(f_pk.readline())
+    f_pk.close()
+
     beta = Lambda_i
     r = random.randint(0, q-1)
     c = random.randint(0, q-1)
     z = r + beta * c
+    a = pow(g, r, p)
     b = pow(h_a_lambda_i, r, p)
     u = h_a_lambda_i
     v = pow(h_a_lambda_i, beta, p)
 
-    return pow(h_a_lambda_i, z, p) == ((pow(h_a_lambda_i, r, p)*pow(h_a_lambda_i, beta*c, p)) % p)
+    return pow(h_a_lambda_i, z, p) == ((pow(h_a_lambda_i, r, p)*pow(h_a_lambda_i, beta*c, p)) % p) and pow(g, z, p) == (a*pow(u, c, p)) % p

@@ -1,0 +1,31 @@
+>>> 
+ RESTART: D:\..\vote_cast_test_II_III.py 
+Vote generation for G_1
+Vote is good:  True
+voter accepts u and v:  True
+
+Vote generation for G_2
+Vote is good:  True
+voter accepts u and v:  True
+
+Vote generation for G_3
+Vote is good:  True
+voter accepts u and v:  True
+
+Vote generation using a different G
+Vote is good:  False
+voter accepts u and v:  True
+
+Generating 100 votes for G_3
+Vote is good:  False
+voter accepts u and v:  True
+
+HV is cheating and getting caught
+Vote is good:  True
+voter accepts u and v:  False
+This is not a final vote!!!
+
+Voter is trying to sell his vote
+(x, y) is indeed a vote for G_2
+(x_, y_) is indeed a vote for G_3
+>>> 

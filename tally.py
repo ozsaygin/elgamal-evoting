@@ -83,11 +83,14 @@ def PartialDecryption(X, a, Lambda, t, p):
     return Omega
 
 
-def calculate_lambda(a_i, a):
+def calculate_lambda(a_i, a,q):
     l = 1
     for m in a:
         if m != a_i:
-            l = l * (m / (m - a_i))
+            denom = m - a_i + q
+            denom = modinv(denom,q)
+            l *= denom * m
+    l = l % q
     return l
 
 
@@ -97,7 +100,7 @@ def FullDecryption(Y, a, Omega, G, t, p, q):
     X = 1
     for index, a_i in enumerate(a):  # get a and index of a
         # calculate lambda for each a
-        l = calculate_lambda(a_i, a)
+        l = calculate_lambda(a_i, a,q)
         # print('lambda: ', l) # debug
         # Omega_a ^ lambda
         X *= pow(Omega[index], q-int(l), p)
@@ -120,7 +123,7 @@ def CheckQuorum(a, h_a_lambda, p, q):
     h = 1
     for index, a_i in enumerate(a):  # get a and index of a
         # calculate lambda for each a
-        l = calculate_lambda(a_i, a)
+        l = calculate_lambda(a_i, a, q)
         # Omega_a ^ lambda
         # print('l:', l)
         h = (h * pow(h_a_lambda[index], q+int(l), p)) % p

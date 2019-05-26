@@ -4,7 +4,7 @@ import warnings
 import sys
 import pyprimes
 import vote_cast_II
-import vote_cast_III
+# import vote_cast_III
 
 HV_CHEAT = False
 

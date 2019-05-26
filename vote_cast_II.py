@@ -100,9 +100,8 @@ def HV_IV(p, q, g, h, G, C, x, y, a, b, c, z, t, w2, f):
 
 def voter_V(p, q, g, h, x, y, f, u, v, e, d, sigma):
 
-
-    xf = (u*x) %p 
-    yf = (v*y) % p
+    xf = (u*x) %p
+    yf = (v*y) %p
     
     accept = (pow(g, sigma,p) == ((d * pow(u, f,p))%p)) and (pow(h,sigma,p) == (((e * pow(v,f,p))%p)))
     # print('check 1: ',(pow(g, sigma,p) == d * pow(u, f,p)))

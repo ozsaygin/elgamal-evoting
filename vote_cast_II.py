@@ -1,6 +1,7 @@
 import random
 import setup
 
+# oguzozsaygin
 
 def egcd(a, b):
     if a == 0:

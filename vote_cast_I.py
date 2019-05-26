@@ -1,6 +1,9 @@
 import random
 import setup
 
+# oguzozsaygin
+
+
 # This block generates multiplicative inverse
 ###################################################
 def egcd(a, b):

@@ -1,3 +1,5 @@
 # untrack keys
 pk.txt
 sk.txt
+
+__pycache__

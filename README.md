@@ -8,6 +8,9 @@ scheme.
 ```bash
 pip install -r requirements.txt
 ```
+## Task list 
+[] Publish the repository as a Python module or rewrite it in another language as module.
+
 
 ## Licence
 
